@@ -17,6 +17,10 @@ Free-first deep research. Hunts with free tools, sips Firecrawl only for
 locked doors. Default cost is 0 credits. Does not do single lookups, coding,
 or chat. Needs no keys; `FIRECRAWL_API_KEY` unlocks surgical mode.
 
+Keyless by default: without a key, everything tagged `[Firecrawl module]`
+drops out and nothing else changes. The paid surface is exactly the tagged
+lines plus `references/firecrawl-surgical.md`.
+
 Portability rule: depends on nothing that doesn't travel with it. `ddgs`,
 `arxiv` API, curl, markdown are universal. Hermes-only tools are never
 required. Firecrawl and computer-use are optional extras.
@@ -36,7 +40,7 @@ Don't use for:
 
 ## Prerequisites
 
-- Optional: `FIRECRAWL_API_KEY` in env or Hermes `.env`. Never hardcode it.
+- Optional: `FIRECRAWL_API_KEY` in env or host `.env`. Never hardcode it.
 - `terminal`, `web_search`, `web_extract` (try free paths first regardless).
 - Free stack: `ddgs` CLI, `arxiv` API, curl. Optional: `scrapling`, browser.
 - Scripts (stdlib-only, no install): `ledger.py`, `mimir-report.py`, `claims.py`.
@@ -48,14 +52,16 @@ Don't use for:
 ## How to Run
 
 ```bash
-python scripts/ledger.py guard                 # posture: FREE-ONLY | PINNED | CAREFUL
-python scripts/ledger.py precheck --budget 90  # gate before Firecrawl
 python scripts/claims.py find "paddle fees"    # reuse known facts first
 python scripts/mimir-report.py --report report.md --used 12 --note "scrape x10 + search x1"
+# [Firecrawl module] the two below; skip if keyless:
+python scripts/ledger.py guard                 # posture: FREE-ONLY | PINNED | CAREFUL
+python scripts/ledger.py precheck --budget 90  # gate before Firecrawl
 ```
 
 `mimir-report.py` does render + verify + ledger log + credit line in one
-call. `precheck` FALLBACK means free-only, still deliver a report.
+call. [Firecrawl module] `precheck` FALLBACK means free-only, still deliver
+a report.
 
 ## Quick Reference
 
@@ -69,13 +75,10 @@ call. `precheck` FALLBACK means free-only, still deliver a report.
 | `--rivals` | disputed topic | two angles in parallel, merged, conflicts shown |
 | `--scout LLM` | user names an LLM | caged GUI run, never X, read-only, <=15 steps |
 
-Firecrawl costs: `scrape 1/page`, `crawl 1/page`, `map 1/call`,
-`search 2/10 results`, `JSON +4/page`, `Enhanced +4/page`,
-`PDF +1/pdf-page`, `interact 2/min`. Papers endpoints free.
-
-Hard caps per run: `search<=2`, `map<=1`, `scrape<=70`, total `<=90`.
-Banned by default: JSON mode, Enhanced mode, Interact, crawl without explicit `limit`.
-Extract caps per mode: brief 5, standard 10, deep 15. Recency: prefer 2025-26 for prices.
+[Firecrawl module] Costs, caps, and bans live in
+`references/firecrawl-surgical.md` — skip that file and every tagged line if
+keyless. Extract caps per mode: brief 5, standard 10, deep 15. Recency:
+prefer 2025-26 for prices.
 
 ## Procedure
 
@@ -89,12 +92,13 @@ Extract caps per mode: brief 5, standard 10, deep 15. Recency: prefer 2025-26 fo
    Unblock via `scrapling` stealth/dynamic or browser before Firecrawl.
    Done when: cap hit or results exhausted, kept-vs-dropped noted.
 
-3. **Gate.** List missing key pages (max 7). `guard` for posture,
-   `precheck --budget <estimate>`. FALLBACK means free-only.
-   Done when: FREE-ONLY or SURGICAL with estimate <=90 logged.
+3. **Gate.** List missing key pages (max 7). [Firecrawl module: `guard` for
+   posture, `precheck --budget <estimate>`; FALLBACK means free-only.]
+   Done when: gap list logged, plus FREE-ONLY or SURGICAL with estimate <=90.
 
-4. **Strike.** Firecrawl on the gap list only, small batches, explicit
-   `limit: 20` on crawls, no fancy options. On 402/429 abort to free-only.
+4. **Strike [Firecrawl module — skip entirely if keyless].** Firecrawl on the
+   gap list only, small batches, explicit `limit: 20` on crawls, no fancy
+   options. On 402/429 abort to free-only.
    Scout only if the user named an LLM this run (see `references/scout-mode.md`).
    Done when: gaps fetched or abort logged, spend recorded via `log`.
 
@@ -104,7 +108,7 @@ Extract caps per mode: brief 5, standard 10, deep 15. Recency: prefer 2025-26 fo
    facts go to `claims.py add`.
    Done when: answer + table + details + Sources block exist.
 
-6. **Close.** `mimir-report.py --report ... --used N`.
+6. **Close.** `mimir-report.py --report ... --used N` (`--used 0` keyless).
    Done when: verify passes, ledger shows the run, credit line present.
 
 ## Scout Rules (detail: `references/scout-mode.md`)
@@ -115,33 +119,33 @@ Extract caps per mode: brief 5, standard 10, deep 15. Recency: prefer 2025-26 fo
 
 ## Pitfalls
 
-- **Key added = native search may now cost.** Hermes prefers Firecrawl when its
-  key exists, so `web_search` / `web_extract` can spend credits. `guard` prints
-  the posture. Sweep with `ddgs` + `arxiv` for true zero, count native calls.
-- **Social URLs often 403 on free tier.** Reddit etc. fail at the API level (proven live). Deprioritize them in surgical lists; cite via search snippets instead.
-- **Crawl default limit is 10000.** Omitting `limit` returns 402 even on free tier.
-  Always pass explicit `limit: 20` or lower.
-- **JSON / Enhanced look harmless, cost +4 each.** 20 pages = 100 credits gone.
-  Keep them off unless the user explicitly approves over-budget.
-- **Search scraping stacks.** `search` (2) + scrape each hit (1 each) adds fast.
-  Count both sides in the estimate.
+- **[Firecrawl module] Key added = native search may now cost.** Hosts that prefer
+  Firecrawl when its key exists can bill `web_search` / `web_extract`.
+  `guard` prints the posture. Sweep with `ddgs` + `arxiv` for true zero.
+- **[Firecrawl module] Social URLs often 403 on free tier.** Reddit etc. fail at the
+  API level (proven live). Deprioritize them in surgical lists; cite via
+  search snippets instead.
+- **[Firecrawl module] Crawl default limit is 10000.** Omitting `limit` returns 402
+  even on free tier. Always pass explicit `limit: 20` or lower.
+- **[Firecrawl module] JSON / Enhanced look harmless, cost +4 each.** 20 pages = 100
+  credits gone. Keep them off unless explicitly approved over-budget.
+- **[Firecrawl module] Search scraping stacks.** `search` (2) + scrape each hit (1
+  each) adds fast. Count both sides in the estimate.
 - **Don't reconstruct citations from memory.** Register URLs at fetch time,
   never retype URLs. Always `render` via `mimir-report.py`.
-- **Don't call Firecrawl without `precheck`.** Ledger is the leash.
+- **[Firecrawl module] Don't call Firecrawl without `precheck`.** Ledger is the leash.
 - **Respect blocks.** Check robots.txt / ToS. Research, not abuse.
 - **Separate runtimes.** `ddgs` in `terminal` is not `execute_code` importable.
 
 ## Verification
 
 ```bash
-python scripts/ledger.py guard
 python scripts/mimir-report.py --report report.md --used 0 --note "free-only"
 python scripts/ledger.py status
 ```
 
-Green means: posture printed, report cites only ledger ids, Sources block
-matches, credit line present, run total <=100. Skipped Firecrawl reports say
-`Mode: free-only` + why.
+Green means: report cites only ledger ids, Sources block matches, credit line
+present, run total <=100. Skipped Firecrawl reports say `Mode: free-only` + why.
 
 ## Learning
 

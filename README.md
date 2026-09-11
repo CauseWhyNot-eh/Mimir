@@ -37,7 +37,7 @@ cp .env.example .env
 
 | Variable | Effect |
 |---|---|
-| `FIRECRAWL_API_KEY` | Unlocks surgical mode. Absent = free-only, permanently. Never hardcoded; read from env or host `.env` at runtime. |
+| `FIRECRAWL_API_KEY` | Unlocks surgical mode. Absent = free-only, permanently. Never hardcoded; read from env or host `.env` at runtime. Keyless installs can ignore `references/firecrawl-surgical.md` and every `[Firecrawl module]` line — that combination is the entire paid surface. |
 | `MIMIR_LEDGER` / `MIMIR_CLAIMS` | Override ledger paths (tests, multi-tenant setups). |
 
 First thing every run does is print its posture, machine-readable on line one:

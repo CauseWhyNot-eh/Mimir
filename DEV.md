@@ -6,6 +6,8 @@ Two homes, one direction of travel.
    skill first (`skills/research/mimir`).
 2. **Mirror on approval only.** When Nachi tests a change and likes it, copy
    the changed files into this repo. Nothing lands here unapproved.
+   Repo-only deltas (live here, never mirrored back to Hermes): Firecrawl
+   framed as a tagged optional module (`references/firecrawl-surgical.md`).
 3. **Re-sync profiles.** The Hermes install keeps one copy per profile. After
    mirroring, refresh every profile copy from the default skill so all
    sessions run the same version:
